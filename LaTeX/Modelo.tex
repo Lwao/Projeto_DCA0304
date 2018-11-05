@@ -1,0 +1,230 @@
+\documentclass[a4paper, 12pt, openright, oneside]{article}
+
+
+\usepackage{graphicx}			% usar gráficos
+\usepackage{multicol,lipsum}	%
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{natbib} 			% citar
+\usepackage{float}				% números em ponto flutuante
+\usepackage[brazil]{babel}		% língua brasileira
+\usepackage{setspace}			% espaçamento entre linhas
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage[top=3cm, bottom=2cm, left=3cm, right=2cm]{geometry}
+
+\parskip15pt					% distância entre parágrafos fixa
+\parindent30pt					%identação fixa
+
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+
+% --- 
+% CONFIGURAÇÕES DE PACOTES
+% --- 
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+\begin{document}
+%\maketitle
+\onehalfspacing
+\begin{titlepage}
+	\begin{center}
+	
+	\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=2cm]{./ufrn.jpg}
+	\end{figure}
+		Universidade Federal do Rio Grande do Norte\\
+		Centro de Tecnologia\\
+		Departamento de Engenharia da Computação e Automação\\
+		DCA0304 -- Métodos Computacionais em Engenharia\\
+		\vspace{15pt}
+        \vspace{95pt}
+        \textbf{\large{Comparação entre Julia e outras linguagens de programação na eficiência de execucação do método de Newton-Raphson na disciplina de métodos computacionais em engenharia}}\\
+		\vspace{3,5cm}
+	\end{center}
+	
+	\begin{flushright}
+			\item André Rodrigues Bezerra Madruga \\
+			Bruno Matias de Sousa \\
+			José Ricardo Bezerra de Araújo \\
+			Levy Gabriel da Silva Galvão \\
+ 	\end{flushright}
+	\vspace{1cm}
+	
+	\begin{center}
+		\vspace{\fill}
+		Novembro\\2018
+	\end{center}
+\end{titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % % % % % % % %FOLHA DE ROSTO % % % % % % % % % %
+
+
+
+\begin{titlepage}
+	\begin{center}
+	
+	\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=2cm]{./ufrn.jpg}
+	\end{figure}
+
+		Universidade Federal do Rio Grande do Norte\\
+		Centro de Tecnologia\\
+		Departamento de Engenharia da Computação e Automação\\
+		DCA0304 -- Métodos Computacionais em Engenharia\\
+\vspace{15pt}
+        
+        \vspace{85pt}
+        
+		\textbf{\large{Comparação entre Julia e outras linguagens de programação na eficiência de execucação do método de Newton-Raphson na disciplina de métodos computacionais em engenharia}}\\
+	%	\large{Modelo\\
+     %   		Validação do modelo clássico}
+			
+	\end{center}
+\vspace{1,5cm}
+	
+	\begin{flushright}
+
+   \begin{list}{}{
+      \setlength{\leftmargin}{4.5cm}
+      \setlength{\rightmargin}{0cm}
+      \setlength{\labelwidth}{0pt}
+      \setlength{\labelsep}{\leftmargin}}
+
+      \item Relatório técnico referente à execução prática dos métodos numéricos para a solução de sistemas de equações não-linearesvrealizado na disciplina de Métodos Computacionais em Engenharia, como requisito parcial para avaliação da terceira unidade da discplina antes mencionada.
+
+      \begin{list}{}{
+      \setlength{\leftmargin}{0cm}
+      \setlength{\rightmargin}{0cm}
+      \setlength{\labelwidth}{0pt}
+      \setlength{\labelsep}{\leftmargin}}
+
+
+            \item Profº. Drº. Paulo Sergio da Motta Pires
+
+      \end{list}
+   \end{list}
+\end{flushright}
+\vspace{1cm}
+\begin{center}
+		\vspace{\fill}
+		 Novembro\\2018
+			\end{center}
+\end{titlepage}
+\newpage
+% % % % % % % % % % % % % % % % % % % % % % % % % %
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\pagenumbering{arabic}
+% % % % % % % % % % % % % % % % % % % % % % % % % % %
+\section*{Resumo}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies. 
+
+ \noindent
+ \textbf{Palavras-chaves}: métodos. computacionais. engenharia.
+\newpage
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+
+% ----------------------------------------------------------
+% Introdução 
+% ----------------------------------------------------------
+
+\section{Introdução}
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+
+Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\newpage
+
+\section{Desenvolvimento}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+
+Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 1}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 2}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 3}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\newpage
+
+\section{Resultados}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+
+Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 1}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 2}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\subsection{Lorem 3}
+Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\newpage
+
+\section{Conclusões}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+
+Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+\newpage
+
+
+% Referências bibliográficas
+
+\nocite{associaccao1989nbr}
+\nocite{marconi2003fundamentos}
+\bibliographystyle{abbrv}
+\bibliography{refs}
+
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[height=6cm]{Photos/galvanometro.jpg}
+%\caption{Na esquerda, um galvanômetro normalmente usado em circuitos, no centro, um galvanômetro com a estrutura iterna à amostra com fins didáticos e na direita as suas escalas. Fonte: própria.}
+%\label{galvanometro}
+%\end{figure}
+\end{document}
