@@ -1,23 +1,10 @@
-function solve(M, b, prec)
+function trans(b)
     n = length(b)
-    x0 = zeros(n)
-    x0 = convert(Array{Float64}, x0)
-    x = zeros(n)
-    x = convert(Array{Float64}, x)
-    intera = 50
-
-    for k = 1:intera
-        x0 = x #jacobi
-        for i = 1:n
-            summ = float(0)
-            for j = 1:n
-                summ = summ + M[i, j]*x0[j]*(i!=j)
-            end
-            x[i] = (1/M[i, i])*(b[i]-summ)
-            #x0 = x #gauus-siedel
-        end
+    t = zeros(n, 1)
+    for i = 1:n
+        t[i, 1] = b[i]
     end
-    return x
+    return t
 end
 
 function f(p)
@@ -58,7 +45,7 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            S = solve(J, -F, tol)
+            S = inv(J)*trans(-F)
             x = x + S
         end
     end
@@ -75,4 +62,4 @@ end
 
     x0 = [0, 2]
     x = newton_raph(x0, 1e-12, true, 100)
-    print("\nSolução: {", string(x[1]), "}")
+    print(x)
