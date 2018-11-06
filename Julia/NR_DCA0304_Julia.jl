@@ -47,7 +47,7 @@ end
 function newton_raph(x0, tol, iter, n_tot)
     tol = abs.(tol)
     n_tot = abs.(n_tot)
-    x = convert(Array{Float64}, b)
+    x = convert(Array{Float64}, x0)
     e = maximum(abs.(f(x)))
     n = 0
     while (e>tol)&(n<=n_tot)
@@ -62,7 +62,7 @@ function newton_raph(x0, tol, iter, n_tot)
             x = x + S
         end
     end
-    if iter==True
+    if iter==true
         print("Total de Iterações: ", string(n))
     end
     if n>=n_tot
@@ -75,4 +75,4 @@ end
 
     x0 = [0, 2]
     x = newton_raph(x0, 1e-12, true, 100)
-    print("Solução: {", string(x[1]), "}")
+    print("\nSolução: {", string(x[1]), "}")
