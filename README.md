@@ -4,7 +4,7 @@ Resolução de sistema de equações não-lineares
 
 Implementar o Método de Newton-Raphson para resolver os sistemas de equações não lineares
 
-1.  
+<p>1.</p>
 
     x2 + x3 - exp(-x1) = 0
     
