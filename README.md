@@ -1,8 +1,6 @@
 # Projeto_DCA0304
 
-Resolução de sistema de equações não-lineares
-
-Implementar o Método de Newton-Raphson para resolver os sistemas de equações não lineares
+Método de Newton-Raphson para resolver os sistemas de equações não lineares
 
 <p>1.</p>
 
