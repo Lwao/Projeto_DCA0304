@@ -1,3 +1,53 @@
+function solve(M, b) 
+    n = length(b)
+    x = zeros(n)
+    lambda = 1
+    es=1e-6
+    
+    for i = 1:n
+        dummy = M[i, i]
+        for j = 1:n
+            M[i, j] = M[i, j]/dummy
+        end
+        b[i] = b[i]/dummy
+    end 
+
+    for i = 1:n
+        soma = b[i]
+        for j = 1:n
+            if (i!=j) 
+                soma = soma - M[i, j]*x[j]
+            end 
+        end 
+        x[i] = soma
+    end 
+
+    iter = 1
+    sentinela = 1
+
+    while (sentinela==1)
+        for i = 1:n
+            old = x[i]
+            soma = b[i]
+            for j = 1:n
+                if (i!=j) 
+                    soma = soma - M[i, i]*x[j]
+                end 
+            end
+            x[i] = lambda*soma + (1-lambda)*old
+
+            if (sentinela==1)&(x[i]!=0)
+                ea = abs.((x[i]-old)/x[i])*100
+            end 
+            if (ea>es) 
+                sentinela = 0
+            end 
+        end 
+    end 
+    return x
+end
+
+
 function trans(b)
     n = length(b)
     t = zeros(n, 1)
@@ -45,7 +95,7 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            S = inv(J)*trans(-F)
+            S = solve(J, -F)
             x = x + S
         end
     end
