@@ -53,6 +53,8 @@ contains
                 J(i, k) = dif(i)
             end do
         end do
+        
+        deallocate(xn, dy, dif)
     end function jac
 
     function solve(M, b) result(x)
@@ -143,6 +145,9 @@ contains
         if (n>=n_tot) then
             write(*,*) "Processo parou, número de iterações limite atingido", n
         end if
+        
+        deallocate(func, S, jc)
+        
     end function newton_raph
 
 end program main
