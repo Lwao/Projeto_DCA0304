@@ -2,31 +2,11 @@
 
 Método de Newton-Raphson para resolver os sistemas de equações não lineares
 
-    Windows:
-        - MeshLab;
-        - Roftview;
-        - Blender;
-    
-    Mac OS:
-        - MeshLab;
-        - Roftview;
-    
-    Linux:
-        - MeshLab;
-        - Roftview;
-        
+    Sistema.1:
+        - x2 + x3 - exp(-x1) = 0
+        - x1 +x3 - exp(-x3) = 0
+        - x1 +x2 - exp(-x3) = 0
 
-    <ul>
-        <li>
-            x2 + x3 - exp(-x1) = 0
-        </li>
-        <li>
-            x1 +x3 - exp(-x3) = 0
-        </li>
-        <li>
-            x1 +x2 - exp(-x3) = 0
-        </li>
-    </ul>
     
 
 <p>2.</p>
