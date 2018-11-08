@@ -17,23 +17,23 @@
 # Estrutura de tópicos do relatório 
 
 ### Introdução
-	Breve introdução histórica (oportunidades variadas par asolução do problema)
-	Introduzir ao problema
-	Relevância do estudo (importância de Julia e a comparação com outras linguagens)
-	Objetivos (o que fazer e para quê)
+	- Breve introdução histórica (oportunidades variadas par asolução do problema)
+	- Introduzir ao problema
+	- Relevância do estudo (importância de Julia e a comparação com outras linguagens)
+	- Objetivos (o que fazer e para quê)
 ### Desenvolvimento
-	Desenvolver o assunto:
+	- Desenvolver o assunto:
 		- Newton-Raphson
-	Explicar a metodologia realiza:
+	- Explicar a metodologia realiza:
 		- Sistemas de eqNL abordados
 		- Fluxograma do pseudocódigo
 ### Resultados 
-	Raízes encontradas
-	Tabela e gráficos referentes aos dados de execução de cada linguagem
+	- Raízes encontradas
+	- Tabela e gráficos referentes aos dados de execução de cada linguagem
 ### Conclusão
-	Discute os resultados e a implicação deles
-	Resolveu o problema?
-	A que nível resolveu o problema?
-	Em que isso contribuiu?
+	- Discute os resultados e a implicação deles
+	- Resolveu o problema?
+	- A que nível resolveu o problema?
+	- Em que isso contribuiu?
 
 
