@@ -2,14 +2,18 @@
 
 Método de Newton-Raphson para resolver os sistemas de equações não lineares
 
-    Sistema.1:
+    **1:**
+        - x2 + x3 - exp(-x1) = 0
+        - x1 +x3 - exp(-x3) = 0
+        - x1 +x2 - exp(-x3) = 0
+        
+    **2:**
         - x2 + x3 - exp(-x1) = 0
         - x1 +x3 - exp(-x3) = 0
         - x1 +x2 - exp(-x3) = 0
 
     
 
-<p>2.</p>
 
     sen(x1*x2)/2 - x2/(4*pi) - x1/2 = 0
     
