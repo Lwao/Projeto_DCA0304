@@ -1,11 +1,10 @@
 \babel@toc {brazil}{}
 \contentsline {section}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
 \contentsline {section}{\numberline {2}Desenvolvimento}{3}
-\contentsline {subsection}{\numberline {2.1}Lorem 1}{3}
-\contentsline {subsection}{\numberline {2.2}Lorem 2}{3}
-\contentsline {subsection}{\numberline {2.3}Lorem 3}{4}
+\contentsline {subsection}{\numberline {2.1}Newton-Raphson para sistema de equa\IeC {\c c}\IeC {\~o}es n\IeC {\~a}o-lineares}{3}
+\contentsline {subsection}{\numberline {2.2}SENL propostos}{3}
+\contentsline {subsection}{\numberline {2.3}Fluxograma do pseudoc\IeC {\'o}digo}{4}
 \contentsline {section}{\numberline {3}Resultados}{5}
-\contentsline {subsection}{\numberline {3.1}Lorem 1}{5}
-\contentsline {subsection}{\numberline {3.2}Lorem 2}{5}
-\contentsline {subsection}{\numberline {3.3}Lorem 3}{6}
-\contentsline {section}{\numberline {4}Conclus\IeC {\~o}es}{7}
+\contentsline {subsection}{\numberline {3.1}Ra\IeC {\'\i }zes}{5}
+\contentsline {subsection}{\numberline {3.2}Efici\IeC {\^e}ncia na execu\IeC {\c c}\IeC {\~a}o}{5}
+\contentsline {section}{\numberline {4}Conclus\IeC {\~o}es}{6}
