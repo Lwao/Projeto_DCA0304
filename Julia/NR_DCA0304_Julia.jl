@@ -6,9 +6,8 @@ function solve_sis(M, b)
     intera = 10
     k = 0
     test = 1
-    #conf = false
-    
-    while (k<intera)|(test>del)
+
+    while (k<intera)&(test>del)
         k = k+1
         xo = x #Jacobi
         for i = 1:n
@@ -18,13 +17,6 @@ function solve_sis(M, b)
             end
             x[i] = (b[i]-summ)/M[i, i]
             test = x[i]-xo[i]
-            #test[i] = x[i]-xo[i]
-            #if abs.(test[i])>del
-             #   conf = true
-            #else
-             #   conf = false
-            #end
-            #xo = x #Gauss-Sidel
         end
     end
     return x
@@ -69,10 +61,7 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            print("\n", J ,"\n")
-            print("\n", -F ,"\n")
             S = solve_sis(J, -F)
-            print("\n", S ,"\n")
             x = x+S
         end
     end
