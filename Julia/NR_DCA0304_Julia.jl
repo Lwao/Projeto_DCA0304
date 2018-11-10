@@ -3,13 +3,14 @@ function solve_sis(M, b)
     x = zeros(n)
     xo = zeros(n)
     del=1e-6
-    intera = 50
+    intera = 10
     k = 0
-    test = 0
+    test = 1
+    conf = false
     
-    while (k<intera)|(abs.(test)>del)
+    while (k<intera)&(test>del)
         k = k+1
-        #xo = x #Jacobi
+        xo = x #Jacobi
         for i = 1:n
             summ = 0;
             for j = 1:n
@@ -17,7 +18,13 @@ function solve_sis(M, b)
             end
             x[i] = (b[i]-summ)/M[i, i]
             test = x[i]-xo[i]
-            xo = x #Gauss-Sidel
+            #test[i] = x[i]-xo[i]
+            #if abs.(test[i])>del
+             #   conf = true
+            #else
+             #   conf = false
+            #end
+            #xo = x #Gauss-Sidel
         end
     end
     return x
@@ -27,9 +34,10 @@ function f(p)
     # sistema de equações
     # eq1: x + y ^ 2 = 4
     # eq2: e ^ x + xy = 3
-    a = p[1] + (p[2] ^ 2) - 4
-    b = exp(p[1]) + p[1] * p[2] - 3
-    return [a b]
+    a = p[2] + p[3] - exp(-p[1])
+    b = p[1] + p[3] - exp(-p[3])
+    c = p[1] + p[2] - exp(-p[3])
+    return [a c b]
 end
 
 function jac(x, dx=1e-10)
@@ -61,11 +69,11 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            print("\n", J, "\n")
-            print("\n", F, "\n")
+            print("\n", J ,"\n")
+            print("\n", -F ,"\n")
             S = solve_sis(J, -F)
-            print("\n", S, "\n")
-            x =  x+S
+            print("\n", S ,"\n")
+            x = x+S
         end
     end
     if iter==true
@@ -79,6 +87,6 @@ function newton_raph(x0, tol, iter, n_tot)
 end
 
 
-    x0 = [2, 3]
+    x0 = [0, 1, 2]
     x = newton_raph(x0, 1e-6, true, 100)
-    #print(x)
+    print(x)
