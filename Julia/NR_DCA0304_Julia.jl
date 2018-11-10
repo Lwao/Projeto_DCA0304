@@ -63,7 +63,7 @@ function newton_raph(x0, tol, iter, n_tot)
         else
             print("\n", J, "\n")
             print("\n", F, "\n")
-            S = solve_sis(J, F)
+            S = solve_sis(J, -F)
             print("\n", S, "\n")
             x =  x+S
         end
