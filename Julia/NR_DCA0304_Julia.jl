@@ -6,7 +6,7 @@ function solve_sis(M, b)
     intera = 10
     k = 0
     test = 1
-    conf = false
+    #conf = false
     
     while (k<intera)&(test>del)
         k = k+1
