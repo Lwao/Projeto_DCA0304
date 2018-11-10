@@ -8,7 +8,7 @@ function solve_sis(M, b)
     test = 1
     #conf = false
     
-    while (k<intera)&(test>del)
+    while (k<intera)|(test>del)
         k = k+1
         xo = x #Jacobi
         for i = 1:n
