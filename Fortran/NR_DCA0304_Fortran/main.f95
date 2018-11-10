@@ -3,37 +3,26 @@
 
 program main
     implicit none
-    real :: x0(2), x(size(x0))
+    real :: x0(3), x(size(x0))
 
-    
-    
     x0(1) = 0
-    x0(2) = 2
-
-
+    x0(2) = 1
+    x0(3) = 2
     
-
-
     x = newton_raph(x0, 1e-12, .true., 100)
-    write(*,*) x(1), x(2)
+    write(*,*) x(1), x(2), x(3)
 
 
-
-    !x0(1) = 1
-    !x0(2) = 2
-    !x = newton_raph(x0, 1e-12, .true., 100)
 
 contains
 
     function f(p) result(res)
         IMPLICIT NONE
-        !sistema de equações
-        !eq1: x + y ^ 2 = 4
-        !eq2: e ^ x + xy = 3
         real :: p(:), res(size(p))
 
-        res(1) = p(1)+(p(2)**2)-4
-        res(2) = exp(p(1))+p(1)*p(2)-3
+        res(1) = p(2) + p(3) - exp(-p(1))
+        res(2) = p(1) + p(2) - exp(-p(3))
+        res(3) = p(1) + p(2) - exp(-p(3))
     end function f
 
     function jac(x) result(J)
@@ -59,53 +48,21 @@ contains
 
     function solve(M, b) result(x)
         IMPLICIT NONE
-        real :: b(:), M(:, :), x(size(b)), lambda=1, es=1e-6, dummy, soma, old, ea
-        integer :: n, iter, sentinela, i, j
+        real :: b(:), M(:, :), x(size(b)), xo(size(b)), test=1, del=1e-6, summ
+        integer :: n, itera=10, i, j, k=0
 
         n = size(b)
-
-        do i = 1,n
-            x(i) = 0
-        end do
-
-        do i = 1,n
-            dummy = M(i, i)
-            do j = 1,n
-                M(i, j) = M(i, j)/dummy
-            end do
-            b(i) = b(i)/dummy
-        end do
-
-        do i = 1,n
-            soma = b(i)
-            do j = 1,n
-                if (i/=j) then
-                    soma = soma - M(i, j)*x(j)
-                end if
-            end do
-            x(i) = soma
-        end do
-
-        iter = 1
-        sentinela = 1
-
-        do while (sentinela==1)
+        
+        do while ((k<itera).and.(test>del))
+            k = k+1
             do i = 1,n
-                old = x(i)
-                soma = b(i)
+                summ = 0;
                 do j = 1,n
                     if (i/=j) then
-                        soma = soma - M(i, j)*x(j)
+                        summ = summ + M(i, j)*xo(j)
                     end if
                 end do
-                x(i) = lambda*soma + (1-lambda)*old
-
-                if ((sentinela==1).and.(x(i)/=0)) then
-                    ea = abs((x(i)-old)/x(i))*100
-                end if
-                if (ea>es) then
-                    sentinela = 0
-                end if
+                x(i) = (b(i)-summ)/M(i, i)
             end do
         end do
     end function solve
