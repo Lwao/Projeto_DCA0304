@@ -1,60 +1,26 @@
-function solve(M, b) 
+function solve_sis(M, b)
     n = length(b)
     x = zeros(n)
-    lambda = 1
-    es=1e-6
+    xo = zeros(n)
+    del=1e-6
+    intera = 50
+    k = 0
+    test = 0
     
-    for i = 1:n
-        dummy = M[i, i]
-        for j = 1:n
-            M[i, j] = M[i, j]/dummy
-        end
-        b[i] = b[i]/dummy
-    end 
-
-    for i = 1:n
-        soma = b[i]
-        for j = 1:n
-            if (i!=j) 
-                soma = soma - M[i, j]*x[j]
-            end 
-        end 
-        x[i] = soma
-    end 
-
-    iter = 1
-    sentinela = 1
-
-    while (sentinela==1)
+    while (k<intera)|(abs.(test)>del)
+        k = k+1
+        #xo = x #Jacobi
         for i = 1:n
-            old = x[i]
-            soma = b[i]
+            summ = 0;
             for j = 1:n
-                if (i!=j) 
-                    soma = soma - M[i, i]*x[j]
-                end 
+                summ = summ + M[i, j]*xo[j]*(i!=j)
             end
-            x[i] = lambda*soma + (1-lambda)*old
-
-            if (sentinela==1)&(x[i]!=0)
-                ea = abs.((x[i]-old)/x[i])*100
-            end 
-            if (ea>es) 
-                sentinela = 0
-            end 
-        end 
-    end 
-    return x
-end
-
-
-function trans(b)
-    n = length(b)
-    t = zeros(n, 1)
-    for i = 1:n
-        t[i, 1] = b[i]
+            x[i] = (b[i]-summ)/M[i, i]
+            test = x[i]-xo[i]
+            xo = x #Gauss-Sidel
+        end
     end
-    return t
+    return x
 end
 
 function f(p)
@@ -95,8 +61,11 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            S = solve(J, -F)
-            x = x + S
+            print("\n", J, "\n")
+            print("\n", F, "\n")
+            S = solve_sis(J, F)
+            print("\n", S, "\n")
+            x =  x+S
         end
     end
     if iter==true
@@ -110,6 +79,6 @@ function newton_raph(x0, tol, iter, n_tot)
 end
 
 
-    x0 = [0, 2]
-    x = newton_raph(x0, 1e-12, true, 100)
-    print(x)
+    x0 = [2, 3]
+    x = newton_raph(x0, 1e-6, true, 100)
+    #print(x)
