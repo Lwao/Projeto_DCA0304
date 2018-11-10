@@ -1,9 +1,17 @@
 #include <iostream>
+#include "Matriz.h"
 
 using namespace std;
 
 int main()
 {
-    cout << "Hello world!" << endl;
+    Matriz M(2, 2), B (2, 2);
+
+
+
+    cin >> M;
+    cin >> B;
+    cout << M+B;
+
     return 0;
 }
