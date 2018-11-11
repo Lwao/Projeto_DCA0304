@@ -1,3 +1,5 @@
+
+
 function solve_sis(M, b)
     n = length(b)
     x = zeros(n)
@@ -22,6 +24,57 @@ function solve_sis(M, b)
     return x
 end
 
+function LU(matriz, vetor_b)
+    n = length(vetor_b)  # Give us total of lines
+    y = zeros(n)
+    x = zeros(n)
+    # (2) Fill L matrix and its diagonal with 1
+    L = zeros(n, n)
+    for i = 1:n
+        L[i, i] = 1
+    end
+
+    # (3) Fill U matrix
+    U = matriz
+    
+    
+    # (4) Find both U and L matrices
+    for i = 1:n-1
+        for k = i+1:n
+            c = U[k, i] / U[i, i]
+            L[k, i] = c # (4.4) Store the multiplier
+            for j = 1:n
+                U[k, j] = U[k, j] - c*U[i, j] # Multiply with the pivot line and subtract
+            end
+        end
+        # (4.5) Make the rows bellow this one zero in the current column
+        for k = i+1:n
+            U[k, i] = 0
+        end
+    end
+        
+    # (5) Perform substitution Ly=b
+    for i = 1:n
+        y[i] = vetor_b[i] / L[i, i]
+        for k = 1:i
+            y[i] = y[i] - y[k]*L[i, k]
+        end
+        #print("y[", i, "] =", y[i], "\n")
+    end
+    x = copy(y)
+    #print("\n", x, "\n")
+    # (6) Perform substitution Ux=y
+    for i = n-1:-1:1
+        for k = i+1:n
+            x[i] = x[i] - x[k]*U[i, k]
+        end
+        x[i] = x[i]/U[i, i]
+    end
+
+
+    return x
+end
+
 function f(p)
     # sistema de equações
     # eq1: x + y ^ 2 = 4
@@ -29,7 +82,7 @@ function f(p)
     a = p[2] + p[3] - exp(-p[1])
     b = p[1] + p[3] - exp(-p[3])
     c = p[1] + p[2] - exp(-p[3])
-    return [a c b]
+    return [a b c]
 end
 
 function jac(x, dx=1e-10)
@@ -61,7 +114,7 @@ function newton_raph(x0, tol, iter, n_tot)
         if length(F) == 1
             x = x - F / J
         else
-            S = solve_sis(J, -F)
+            S = LU(J, -F)
             x = x+S
         end
     end
@@ -76,6 +129,6 @@ function newton_raph(x0, tol, iter, n_tot)
 end
 
 
-    x0 = [0, 1, 2]
-    x = newton_raph(x0, 1e-6, true, 100)
+    x0 = [0.5, 0.5, 0.5]
+    x = newton_raph(x0, 1e-6, true, 1)
     print(x)
