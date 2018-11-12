@@ -120,10 +120,10 @@ contains
         end do
 
         if (iter .eqv. .true.) then
-            write(*,*) "Total de iterações: ", n
+            write(*,*) "Total de iteracoes: ", n
         end if
         if (n>=n_tot) then
-            write(*,*) "Processo parou, número de iterações limite atingido", n
+            write(*,*) "Processo parou, numero de iteracoes limite atingido", n
         end if
 
     end function newton_raph
