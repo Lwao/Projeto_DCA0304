@@ -114,7 +114,7 @@ def newton_raph(func, x0, tol, iter):
 
         print('\nTotal de Iteracoes: ' + str(n))
         if n >= iter:  #Condicao de parada
-            print("PROCESSO PAROU, número de iteracoes limite atingido!")
+            print("PROCESSO PAROU, numero de iteracoes limite atingido!")
             return x
         else:
             return x
