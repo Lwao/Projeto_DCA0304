@@ -3,13 +3,13 @@
 
 program main
     implicit none
-    real :: x0(3), x(size(x0))
+    double precision :: x0(3), x(size(x0)), tol=1e-12
 
-    x0(1) = 0
-    x0(2) = 0
-    x0(3) = 1
-    
-    x = newton_raph(x0, 1e-12, .true., 100)
+    x0(1) = 0.5
+    x0(2) = 0.5
+    x0(3) = 0.5
+
+    x = newton_raph(x0, tol, .true., 100)
     write(*,*) x(1), x(2), x(3)
 
 
@@ -18,37 +18,37 @@ contains
 
     function f(p) result(res)
         IMPLICIT NONE
-        real :: p(:), res(size(p))
+        double precision :: p(:), res(size(p))
 
         res(1) = p(2) + p(3) - exp(-p(1))
-        res(2) = p(1) + p(2) - exp(-p(3))
+        res(2) = p(1) + p(3) - exp(-p(3))
         res(3) = p(1) + p(2) - exp(-p(3))
     end function f
 
-    function jac(x) result(J)
+    function jac(x) result(jc)
         IMPLICIT NONE
-        real :: dx=1e-10, x(:), J(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
+        double precision :: dx=1e-12, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
         integer :: n, i, k
 
         n = size(x)
         do k = 1,n
             xn = x
-            x(k) = xn(k)+dx
+            xn(k) = xn(k)+dx
             dy = f(xn) - f(x)
             dif = dy/dx
             do i = 1,n
-                J(i, k) = dif(i)
+                jc(i, k) = dif(i)
             end do
         end do
     end function jac
 
     function LU(M, b) result(x)
         IMPLICIT NONE
-        real :: b(:), M(:, :), x(size(b)), y(size(b)), U(size(b), size(b)), L(size(b), size(b)), c
+        double precision :: b(:), M(:, :), x(size(b)), y(size(b)), U(size(b), size(b)), L(size(b), size(b)), c
         integer :: n, i, j, k
 
         n = size(b)
-        
+
         do i = 1,n
             do j = 1,n
                 L(i, j) = 0
@@ -60,9 +60,9 @@ contains
             y(i) = 0
             L(i, i) = 1
         end do
-        
+
         U = M
-        
+
         do i = 1,(n-1)
             do k = (i+1),n
                 c = U(i, k) / U(i, i)
@@ -75,16 +75,16 @@ contains
                 U(k, i) = 0
             end do
         end do
-        
+
         do i = 1,n
             y(i) = b(i) / L(i, i)
             do k = 1,(i-1)
                 y(i) = y(i) - y(k)*L(i, k)
             end do
         end do
-        
+
         x = y
-        
+
         do i = n,1,-1
             do k = (i+1),n
                 x(i) = x(i) - x(k)*U(i, k)
@@ -95,15 +95,14 @@ contains
 
     function newton_raph(x0, tol, iter, n_tot) result(x)
         IMPLICIT NONE
-        real :: x0(:), x(size(x0)), tol, e, temp(2), func(size(x0)), S(size(x0)), jc(size(x0), size(x0))
-        integer :: n_tot, n0, n=0, i, j, k
+        double precision :: x0(:), x(size(x0)), tol, e, func(size(x0)), S(size(x0)), jc(size(x0), size(x0))
+        integer :: n_tot, n0, n=0, i
         logical :: iter
 
         n0 = size(x0)
-        tol = abs(tol)
-        n_tot = abs(n_tot)
+
         do i = 1,n0
-            x(i) = real(x0(i))
+            x(i) = x0(i)
         end do
         e = maxval(abs(f(x)))
 
@@ -126,7 +125,7 @@ contains
         if (n>=n_tot) then
             write(*,*) "Processo parou, número de iterações limite atingido", n
         end if
-        
+
     end function newton_raph
 
 end program main
