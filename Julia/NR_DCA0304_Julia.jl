@@ -1,61 +1,48 @@
 function LU(matriz, vetor_b)
-    n = length(vetor_b)  # Give us total of lines
+    n = length(vetor_b)  
     x = zeros(n)
-    # (2) Fill L matrix and its diagonal with 1
     L = zeros(n, n)
     for i = 1:n
         L[i, i] = 1
     end
-    # (3) Fill U matrix
     U=zeros(n,n)
     U = matriz
     
-    # (4) Find both U and L matrices
+
     for i = 1:n-1
         for k = i+1:n
             c = U[k, i] / U[i, i]
-            L[k, i] = c # (4.4) Store the multiplier
+            L[k, i] = c 
             for j = 1:n
-                U[k, j] = U[k, j] - c*U[i, j] # Multiply with the pivot line and subtract
+                U[k, j] = U[k, j] - c*U[i, j] 
             end
         end
-        # (4.5) Make the rows bellow this one zero in the current column
         for k = i+1:n
             U[k, i] = 0
         end
     end
-    #print(L)
     y = zeros(n)
-    # (5) Perform substitution Ly=b
     for i = 1:n
         y[i] = vetor_b[i] / L[i, i]
         
         for k = 1:i-1
             y[i] = y[i]  - y[k]*L[i, k]
-            #print(y[i], "\n")
         end
-        #print("y[", i, "] =", y[i], "\n")
     end
-    #print(y, "\n")
     n = length(y)
-    #print(n)
     x = copy(y)
-    #print("\n", x, "\n")
-    # (6) Perform substitution Ux=y
     for i = (n:-1:1)
-    
         for k = 1+i:n
             x[i] = x[i] - x[k]*U[i, k]
         end
         x[i] = x[i]/U[i, i]
     end
-    #print(x, "\n")
 
     return x
 end
 
 function f(p)
-    # sistema de equações
+    # sistema de equacoes
     # eq1: x + y ^ 2 = 4
     # eq2: e ^ x + xy = 3
     a = p[2] + p[3] - exp(-p[1])
@@ -98,10 +85,10 @@ function newton_raph(x0, tol, iter, n_tot)
         end
     end
     if iter==true
-        print("Total de Iterações: ", string(n))
+        print("Total de Iteracoes: ", string(n))
     end
     if n>=n_tot
-        print("Processo parou, número de iterações limite atingido")
+        print("Processo parou, numero de iteracoes limite atingido")
     else
         return x
     end
@@ -110,4 +97,4 @@ end
 
     x0 = [0.5, 1, 5]
     x = newton_raph(x0, 1e-12, true, 100)
-    print("\nSolução= ",x, "\n")
+    print("\nSolucao= ",x, "\n")
