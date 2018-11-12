@@ -26,6 +26,35 @@
 \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
 \usepackage[alf]{abntex2cite}	% Citações padrão ABNT
 
+%----------------------
+% Pacotes para a linha de código
+%----------------------
+\usepackage{xcolor}
+% Definindo novas cores
+\definecolor{verde}{rgb}{0,0.5,0}
+% Configurando layout para mostrar codigos C++
+\usepackage{listings}
+\lstset{
+  language=Fortran,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  stringstyle=\color{verde},
+  commentstyle=\color{red},
+  extendedchars=true,
+  showspaces=false,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny,
+  breaklines=true,
+  backgroundcolor=\color{green!10},
+  breakautoindent=true,
+  captionpos=b,
+  xleftmargin=0pt,
+}
+\pagestyle{empty}
+%----------------------
+%----------------------
+
 % --- 
 % CONFIGURAÇÕES DE PACOTES
 % --- 
@@ -164,6 +193,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida maur
 
 \section{Introdução}
 
+\pagestyle{myheadings}
+\markright{ }
 
 Muitos problemas da ciência da computação e de outras ciências podem serem abstraídos por meio de fórmulas e equações provenientes de uma linguagem matemática. Algumas dessas equações podem ser solucionadas de forma analítica utilizando a conceituação da literatura da área. Porém muitos outros problemas não possuem solução fechada por um método analítico, assim sendo necessário recorrer aos métodos iterativos, na maioria dos casos.
 
@@ -222,6 +253,7 @@ Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium 
 \newpage
 
 
+
 % Referências bibliográficas
 
 \nocite{associaccao1989nbr}
@@ -235,4 +267,384 @@ Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium 
 %\caption{Na esquerda, um galvanômetro normalmente usado em circuitos, no centro, um galvanômetro com a estrutura iterna à amostra com fins didáticos e na direita as suas escalas. Fonte: própria.}
 %\label{galvanometro}
 %\end{figure}
+
+\newpage
+
+\section{Apêndice}
+
+
+
+\subsection{Fortran}
+\begin{lstlisting}
+program main
+    implicit none
+    double precision :: x0(3), x(size(x0)), tol=1e-12
+
+    x0(1) = 0.5
+    x0(2) = 0.5
+    x0(3) = 0.5
+
+    x = newton_raph(x0, tol, .true., 100)
+    write(*,*) x(1), x(2), x(3)
+
+
+
+contains
+
+    function f(p) result(res)
+        IMPLICIT NONE
+        double precision :: p(:), res(size(p))
+
+        res(1) = p(2) + p(3) - exp(-p(1))
+        res(2) = p(1) + p(3) - exp(-p(3))
+        res(3) = p(1) + p(2) - exp(-p(3))
+    end function f
+
+    function jac(x) result(jc)
+        IMPLICIT NONE
+        double precision :: dx=1e-12, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
+        integer :: n, i, k
+
+        n = size(x)
+        do k = 1,n
+            xn = x
+            xn(k) = xn(k)+dx
+            dy = f(xn) - f(x)
+            dif = dy/dx
+            do i = 1,n
+                jc(i, k) = dif(i)
+            end do
+        end do
+    end function jac
+
+    function LU(M, b) result(x)
+        IMPLICIT NONE
+        double precision :: b(:), M(:, :), x(size(b)), y(size(b)), U(size(b), size(b)), L(size(b), size(b)), c
+        integer :: n, i, j, k
+
+        n = size(b)
+
+        do i = 1,n
+            do j = 1,n
+                L(i, j) = 0
+                U(i, j) = 0
+            end do
+        end do
+        do i = 1,n
+            x(i) = 0
+            y(i) = 0
+            L(i, i) = 1
+        end do
+
+        U = M
+
+        do i = 1,(n-1)
+            do k = (i+1),n
+                c = U(i, k) / U(i, i)
+                L(k, i) = c
+                do j = 1,n
+                    U(k, j) = U(k, j) - c*U(i, j)
+                end do
+            end do
+            do k = (i+1),n
+                U(k, i) = 0
+            end do
+        end do
+
+        do i = 1,n
+            y(i) = b(i) / L(i, i)
+            do k = 1,(i-1)
+                y(i) = y(i) - y(k)*L(i, k)
+            end do
+        end do
+
+        x = y
+
+        do i = n,1,-1
+            do k = (i+1),n
+                x(i) = x(i) - x(k)*U(i, k)
+            end do
+            x(i) = x(i)/U(i, i)
+        end do
+    end function LU
+
+    function newton_raph(x0, tol, iter, n_tot) result(x)
+        IMPLICIT NONE
+        double precision :: x0(:), x(size(x0)), tol, e, func(size(x0)), S(size(x0)), jc(size(x0), size(x0))
+        integer :: n_tot, n0, n=0, i
+        logical :: iter
+
+        n0 = size(x0)
+
+        do i = 1,n0
+            x(i) = x0(i)
+        end do
+        e = maxval(abs(f(x)))
+
+        do while ((e>tol).and.(n<=n_tot))
+            n = n+1
+            func = f(x)
+            e = maxval(abs(func))
+            jc = jac(x)
+            if (size(func)==1) then
+                x = x - (func(1)/jc(1, 1))
+            else
+                S = LU(jc, -func)
+                x = x+S
+            end if
+        end do
+
+        if (iter .eqv. .true.) then
+            write(*,*) "Total de iteracoes: ", n
+        end if
+        if (n>=n_tot) then
+            write(*,*) "Processo parou, numero de iteracoes limite atingido", n
+        end if
+
+    end function newton_raph
+
+end program main
+
+
+ } \end{lstlisting}
+\newpage
+
+\subsection{Julia}
+\begin{lstlisting}
+function LU(matriz, vetor_b)
+    n = length(vetor_b)  
+    x = zeros(n)
+    L = zeros(n, n)
+    for i = 1:n
+        L[i, i] = 1
+    end
+    U=zeros(n,n)
+    U = matriz
+    
+
+    for i = 1:n-1
+        for k = i+1:n
+            c = U[k, i] / U[i, i]
+            L[k, i] = c 
+            for j = 1:n
+                U[k, j] = U[k, j] - c*U[i, j] 
+            end
+        end
+        for k = i+1:n
+            U[k, i] = 0
+        end
+    end
+    y = zeros(n)
+    for i = 1:n
+        y[i] = vetor_b[i] / L[i, i]
+        
+        for k = 1:i-1
+            y[i] = y[i]  - y[k]*L[i, k]
+        end
+    end
+    n = length(y)
+    x = copy(y)
+    for i = (n:-1:1)
+        for k = 1+i:n
+            x[i] = x[i] - x[k]*U[i, k]
+        end
+        x[i] = x[i]/U[i, i]
+    end
+
+    return x
+end
+
+function f(p)
+    # sistema de equacoes
+    # eq1: x + y ^ 2 = 4
+    # eq2: e ^ x + xy = 3
+    a = p[2] + p[3] - exp(-p[1])
+    b = p[1] + p[3] - exp(-p[3])
+    c = p[1] + p[2] - exp(-p[3])
+    return [a c b]
+end
+
+function jac(x, dx=1e-10)
+    n = length(x)
+    J = zeros(n, n)
+    for j = 1:n
+        xn = copy(x)
+        xn[j] = xn[j] +dx
+        dy = f(xn) - f(x)
+        dif = dy/dx
+        for i = 1:n
+            J[i, j] = dif[i]
+        end
+    end
+    return J
+end
+
+function newton_raph(x0, tol, iter, n_tot)
+    tol = abs.(tol)
+    n_tot = abs.(n_tot)
+    x = convert(Array{Float64}, x0)
+    e = maximum(abs.(f(x)))
+    n = 0
+    while (e>tol)&(n<=n_tot)
+        n += 1
+        F = f(x)
+        e = maximum(abs.(F))
+        J = jac(x)
+        if length(F) == 1
+            x = x - F / J
+        else
+            S = LU(J, -F)
+            x = x+S
+        end
+    end
+    if iter==true
+        print("Total de Iteracoes: ", string(n))
+    end
+    if n>=n_tot
+        print("Processo parou, numero de iteracoes limite atingido")
+    else
+        return x
+    end
+end
+
+
+    x0 = [0.5, 1, 5]
+    x = newton_raph(x0, 1e-12, true, 100)
+    print("\nSolucao= ",x, "\n")
+
+
+ } \end{lstlisting}
+\newpage
+
+\subsection{Python}
+\begin{lstlisting}
+import numpy as np
+import time
+from numpy import sin, exp
+from math import pi
+
+def f(p):
+    '''
+    Sistema de equacoes
+
+        eq1: 1/2*sin(x*y)-(y/(4*pi))-(x/2),
+        eq2: (1-1/(4*pi))*((exp(2*x))-exp(1))-((exp(1)*y)/pi)-2*exp(1)*x)
+
+        eq3: y+z-exp(-x)
+        eq4: x+y-exp(-z)
+        eq5: x+z-exp(-z)
+    '''
+
+    x, y = p
+
+    return np.array((1/2*sin(x*y)-(y/(4*pi))-(x/2),
+                     (1 - 1 / (4 * pi)) * ((exp(2 * x)) - exp(1)) - ((exp(1) * y) / pi) - 2 * exp(1) * x))
+
+def jac(f, x, dx=1e-10):
+    x = np.array(x)
+    n = len(x)
+    J = np.zeros((n, n))
+    for j in range(n):
+        xn = np.copy(x)
+        xn[j] = xn[j] + dx
+        dy = np.array(f(xn)) - np.array(f(x))
+        dif = dy / dx
+        for i in range(n):
+            J[i, j] = dif[i]
+    return J
+
+def LU(matriz, vetor_b):
+    n = len(matriz)  
+
+    L = [[0 for i in range(n)] for i in range(n)]
+    for i in range(0, n):
+        L[i][i] = 1
+
+    U = [[0 for i in range(0, n)] for i in range(n)]
+    for i in range(0, n):
+        for j in range(0, n):
+            U[i][j] = matriz[i][j]
+    n = len(U)
+
+
+    for i in range(0, n-1): 
+        for k in range(i + 1, n):
+            c = U[k][i] / U[i][i]
+            L[k][i] = c  
+            for j in range(0, n):
+                U[k][j] -= c * U[i][j] 
+
+        for k in range(i + 1, n):
+            U[k][i] = 0
+    n = len(L)
+
+    y = [0 for i in range(n)]
+    for i in range(0, n, 1):
+        y[i] = vetor_b[i] / L[i][i]
+        for k in range(0, i, 1):
+            y[i] -= y[k] * L[i][k]
+
+    n = len(U)
+
+    x = [y[i] for i in range(0, n)]
+    for i in range(n-1, -1, -1):
+        for k in range(i+1, n):
+            x[i] -= x[k] * U[i][k]
+        x[i] /= U[i][i]
+    return x
+
+
+def newton_raph(func, x0, tol, iter):
+    """
+	    Parametros:
+
+	    func:       //E  uma funcao que deve conter todas as equacoes do sistema.
+	    x0:         //Uma lista ou array com chute inicial para cada variavel.
+	    tol:        //Determina a tolerancia minima dos valores da matriz F como criterio de parada.
+	                    Este valor deve ser proximo de zero, logo e aceitavel tol = 1e-12.
+	    iter:      //Representa um numero de iteracoes maximo como criterio de parada.
+    """
+    tol = abs(tol)
+    iter = abs(iter)
+    x = (np.array(x0)).astype(np.float)
+    e = max(abs(np.array(func(x))))
+    n = 0
+    if iter == 0:
+        print('\nTotal de Iteracoes: ' + str(n))
+        return x
+    else:
+
+        while (e > tol and n <= iter):
+            n += 1
+            F = np.array(func(x))
+            e = max(abs(F))
+            J = jac(func, x)
+            if len(F) == 1:
+                x = x - F / J
+            else:
+                S = LU(J, -F)
+                x = x + S
+
+        print('\nTotal de Iteracoes: ' + str(n))
+        if n >= iter:
+            print("PROCESSO PAROU, numero de iteracoes limite atingido!")
+            return x
+        else:
+            return x
+
+
+if __name__ == "__main__":
+
+    x0 = [0.5, 0.5]
+    iter = 100
+    tol = 1e-12
+
+    x = newton_raph(f, x0, tol, iter)
+
+    print('Solucao: {} ' .format(x))
+
+    fim_sis = time.process_time()
+    print('Tempo gasto: {}'.format(fim_sis))
+
+ } \end{lstlisting}
 \end{document}
