@@ -1,0 +1,257 @@
+%% abtex2-modelo-slides.tex, v-1.0 gfabinhomat
+%% Copyright 2012-2016 by abnTeX2 group at http://www.abntex.net.br/ 
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Fábio Rodrigues Silva, 
+%% member of abnTeX2 team, led by Lauro César Araujo. 
+%% Further information are available on 
+%% http://www.abntex.net.br/
+%%
+%% This work consists of the files abntex2-modelo-slides.tex, 
+%% abntex2-modelo-references.bib and abntex2-modelo-marca.pdf
+%%
+%% Modelo desenvolvido por Fábio Rodrigues Silva (gfabinhomat@gmail.com)
+%% Mais informações podem ser obtidas no guia do usuário Beamer 
+%% (http://linorg.usp.br/CTAN/macros/latex/contrib/beamer/doc/beameruserguide.pdf)
+%% Informações rápidas podem ser acessadas em http://en.wikibooks.org/wiki/LaTeX/Presentations
+
+
+% Apresentações em widescreen. Outros valores possíveis: 1610, 149, 54, 43 e 32.
+% Por padrão, as apresentações são no formato 4:3 (sem o aspectratio).
+\documentclass[aspectratio=1610]{beamer}	 	
+
+\everymath{\displaystyle} %farc tamanho ideal
+\usetheme{Pittsburgh}
+\usecolortheme{default}
+\usefonttheme[onlymath]{serif}			% para fontes matemáticas
+% Enconte mais temas e cores em http://www.hartwork.org/beamer-theme-matrix/ 
+% Veja também http://deic.uab.es/~iblanes/beamer_gallery/index.html
+
+% Customizações de Cores: fg significa cor do texto e bg é cor do fundo
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=red}
+\setbeamercolor{author}{fg=darkgray}
+\setbeamercolor{institute}{fg=blue}
+\setbeamercolor{date}{fg=green}
+\setbeamercolor{frametitle}{fg=blue}
+\setbeamercolor{framesubtitle}{fg=brown}
+\setbeamercolor{block title}{bg=blue, fg=white}		%Cor do título
+\setbeamercolor{block body}{bg=lightgray, fg=darkgray}	%Cor do texto (bg= fundo; fg=texto)
+
+% ---
+% PACOTES
+% ---
+\usepackage[alf]{abntex2cite}		% Citações padrão ABNT
+\usepackage[brazil]{babel}		% Idioma do documento
+\usepackage{color}			% Controle das cores
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{txfonts}			% Fontes virtuais
+% ---
+
+% --- Informações do documento ---
+\title{Comparação entre Julia e outras linguagens de programação na eficiência de execução do método de Newton-Raphson para solução de sistema de equações não-lineares}
+\author{{\scriptsize André Rodrigues Bezerra Madruga \\ 
+		Bruno Matias de Sousa \\ 
+		José Ricardo Bezerra de Araújo \\ 
+		Levy Gabriel da Silva Galvão \\}}
+\date{\today}
+% ---
+
+% ----------------- INÍCIO DO DOCUMENTO --------------------------------------
+\begin{document}
+
+% ----------------- NOVO SLIDE --------------------------------
+\begin{frame}
+
+\begin{minipage}{1\linewidth}
+  \centering
+    %\includegraphics[width=1cm]{ufrn.jpg} \\
+	\begin{footnotesize}
+	 \textbf{Universidade Federal do Rio Grande do Norte} \\ 
+	\textbf{Centro de Tecnologia} \\ 
+	\textbf{Departamento de Engenharia da Computação e Automação} \\ 
+	\textbf{DCA0304 -- Métodos Computacionais em Engenharia} \\
+	 \end{footnotesize} 
+\end{minipage}
+
+\titlepage
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\begin{frame}{Sumário}
+\tableofcontents
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\section{Introdução}
+
+\begin{frame}{Introdução}
+
+\begin{itemize}
+ \item Vários problemas sem solução analítica; \pause
+ 
+ \item Necessidade de métodos iterativos;\pause
+ 
+ \item Computação numérica;\pause
+ 
+ \item Várias linguagens de programação;\pause
+ 
+ \item Julia: recente e eficiente.
+\end{itemize}
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\section{Objetivos}
+
+\begin{frame}{Objetivos}
+
+\begin{itemize}
+ \item Solução de sistemas de equações não-lineares pelo método de Newton-Raphson; \pause
+ 
+ \item Utilizar \textit{Fortran 95}, \textit{Julia} e \textit{Python};\pause
+ 
+ \item Comparar a eficiência de execução do algoritmo por cada linguagem;
+
+\end{itemize}
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+
+\begin{frame}{Sistemas de equações não-lineares}
+
+\begin{block}{Sistema 1:}
+ \begin{enumerate}
+ \item $ x_2 + x_3 - e^{-x_1} = 0$
+ \item $ x_1 + x_3 - e^{-x_3} = 0$
+ \item $ x_1 + x_2 - e^{-x_3} = 0$
+\end{enumerate}
+\end{block}
+
+\begin{block}{Sistema 2:}
+ \begin{enumerate}
+ \item $ \frac{1}{2}sen(x_1x_2) - \frac{x_2}{4\pi} - \frac{x_1}{2}  = 0$
+ \item $ (1-\frac{1}{4\pi})(e^{2x_1}-e) - \frac{ex_2}{\pi} - 2ex_1 = 0$
+\end{enumerate}
+\end{block}
+
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\section{Implementação}
+\begin{frame}
+\frametitle{Público-Alvo}
+\framesubtitle{Usuários já iniciados ao Beamer}
+
+\begin{block}{Título}
+ Este modelo foi preparado como uma aplicação do uso do pacote abnTeX2 com o Beamer.
+\end{block}
+
+\begin{itemize}
+ \item Alguns comandos são explicados no modelo TEX. \pause
+ 
+ \item Para maiores informações, consulte o guia do usuário Beamer 
+ (\url{https://www.ctan.org/pkg/beamer})\pause
+ 
+ \item Para alterar o tema e as cores, consulte 
+ \url{http://deic.uab.es/~iblanes/beamer_gallery/index.html}
+ 
+ \item Consulte também \url{http://www.hartwork.org/beamer-theme-matrix/}
+\end{itemize}
+
+\end{frame}
+
+
+% ----------------- NOVO SLIDE --------------------------------
+\begin{frame}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=2cm]{ufrn.jpg}
+  \caption{Marca abnTeX2. Fonte: \url{http://www.abntex.net.br/}}
+\end{figure}
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\section{Resultados}
+
+\begin{frame}
+\frametitle{ABNT}
+\framesubtitle{Normas para trabalhos acadêmicos}
+
+Para adequar seus documentos acadêmicos com as normas ABNT, utilize:
+\begin{enumerate}
+ \item \citeonline{NBR14724:2011}: Esta Norma especifica os princípios gerais
+ para a elaboração de trabalhos acadêmicos (teses, dissertações e outros),
+ visando sua apresentação à instituição (banca, comissão examinadora de
+ professores, especialistas designados e/ou outros).
+ 
+ \item \citeonline{NBR6028:2003}: Esta Norma estabelece os requisitos para
+ redação e apresentação de resumos.
+ 
+ \item \citeonline{NBR6024:2012}: Esta Norma especifica os princípios gerais
+ para de um sistema de numeração progressiva das seções de um documento, de
+ modo a expor numa seqüência lógica o inter-relacionamento da matéria e a
+ permitir sua localização.
+ 
+ \item \citeonline{NBR10520:2002}: Esta Norma especifica as características
+ exigíveis para a apresentação de citações em documentos.
+\end{enumerate}
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\begin{frame}
+\frametitle{abnTeX2}
+\framesubtitle{Usando a suíte abnTeX2}
+
+Consulte \citeonline{abntex2-wiki-como-customizar} para customizações do abnTeX2.
+\vspace{0.5cm}
+
+Os documentos \citeonline{abntex2modelo-artigo},
+\citeonline{abntex2modelo-relatorio} e \citeonline{abntex2modelo} tratam dos
+principais trabalhos acadêmicos e suas aplicações ao TeX.
+\vspace{0.5cm}
+
+Para orientações sobre as citações e as referências com o abnTeX2, consulte
+\citeonline{abntex2cite} e \citeonline{abntex2cite-alf}.
+\vspace{0.5cm}
+
+\end{frame}
+
+% ----------------- NOVO SLIDE --------------------------------
+\section{Conclusões}
+
+\begin{frame}{Conclusões}
+
+\begin{itemize}
+ \item Vários problemas sem solução analítica;
+ 
+ \item Necessidade de métodos iterativos;
+ 
+ \item Computação numérica;
+ 
+ \item Várias linguagens de programação;
+ 
+ \item Julia: recente e eficiente.
+\end{itemize}
+
+\end{frame}
+
+% ----------------- FIM DO DOCUMENTO -----------------------------------------
+\end{document}
