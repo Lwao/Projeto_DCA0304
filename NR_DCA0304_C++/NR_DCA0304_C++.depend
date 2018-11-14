@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1542046973 source:c:\users\levyg\desktop\nr_dca0304_c++\main.cpp
+	<iostream>
+	"Matriz.h"
+	<cmath>
+
+1542042897 c:\users\levyg\desktop\nr_dca0304_c++\matriz.h
+	<iostream>
+
+1542046992 source:c:\users\levyg\desktop\nr_dca0304_c++\matriz.cpp
+	"Matriz.h"
+	<cmath>
+
