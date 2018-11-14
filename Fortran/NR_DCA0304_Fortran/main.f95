@@ -1,6 +1,7 @@
 program main
     implicit none
-    double precision :: x0(3), x(size(x0)), tol, iter
+    double precision :: x0(3), x(size(x0)), tol
+    integer :: iter
     !Chute inicial
     x0(1) = 0.5
     x0(2) = 0.5
@@ -14,12 +15,12 @@ program main
 
 
 contains
-    
+
     !DECLARACAO DAS FUNCOES
     function f(p) result(res)
         IMPLICIT NONE
         double precision :: p(:), res(size(p))
-        
+
         !Sistema de equacoes
 
         !eq1: 1/2*sin(x1*x2)-(x2/(4*pi))-(x1/2),
@@ -36,7 +37,7 @@ contains
     !MATRIZ JACOBIANA
     function jac(x) result(jc)
         IMPLICIT NONE
-        double precision :: dx=1e-12, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
+        double precision :: dx=1e-10, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
         integer :: n, i, k
 
         n = size(x)
@@ -78,14 +79,13 @@ contains
                 L(k, i) = c !Armazena o multiplicador
                 do j = 1,n
                     U(k, j) = U(k, j) - c*U(i, j) !Multiplica com o pivo da linha e subtrai
-end
                 end do
             end do
             do k = (i+1),n
                 U(k, i) = 0
             end do
         end do
-        
+
         !Resolve o Sistema Ly=b
         do i = 1,n
             y(i) = b(i) / L(i, i)
