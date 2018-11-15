@@ -8,3 +8,7 @@
 \contentsline {subsection}{\numberline {3.1}Ra\IeC {\'\i }zes}{5}
 \contentsline {subsection}{\numberline {3.2}Efici\IeC {\^e}ncia na execu\IeC {\c c}\IeC {\~a}o}{5}
 \contentsline {section}{\numberline {4}Conclus\IeC {\~o}es}{6}
+\contentsline {section}{\numberline {5}Ap\IeC {\^e}ndice}{8}
+\contentsline {subsection}{\numberline {5.1}Fortran}{8}
+\contentsline {subsection}{\numberline {5.2}Julia}{12}
+\contentsline {subsection}{\numberline {5.3}Python}{15}
