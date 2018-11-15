@@ -223,33 +223,166 @@ Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium 
 \subsection{Newton-Raphson para sistema de equações não-lineares}
 Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
 
-\subsection{SENL propostos}
-Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+\subsection{Sistema de equações propostos}
 
-\subsection{Fluxograma do pseudocódigo}
-Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+Os sistemas considerados para a solução são dois. Um contendo três varáveis e outro com duas. Aquele que possui três variáveis será chamado de sistema 1 (sis\_1). O outro será o sistema 2 (sis\_2).
+
+A seguir estão apresentados os sistemas. Vale salientar que o sistema 2 possui resposta dada em radiano, uma vez que as variáveis $x_1$ e $x_2$ compõem o argumento de uma função senoidal.
+
+
+\begin{itemize}
+\item $ x_2 + x_3 - e^{-x_1} = 0$
+\item $ x_1 + x_3 - e^{-x_3} = 0$
+\item $ x_1 + x_2 - e^{-x_3} = 0$
+\end{itemize}
+\bigskip 
+\begin{itemize}
+\item $ \frac{1}{2}sen(x_1x_2) - \frac{x_2}{4\pi} - \frac{x_1}{2}  = 0$
+\item $ (1-\frac{1}{4\pi})(e^{2x_1}-e) - \frac{ex_2}{\pi} - 2ex_1 = 0$
+\end{itemize}
+
+
+\subsection{Fluxograma do algoritmo}
+Na execuação dos códigos o algoritmo base se permaneceu o mesmo, apesar de ele ser aplicado em três linguagens diferentes (Fortran 95, Julia e Python).
+
+O algoritmo será descrito a seguir por meio de fluxogramas. Contudo, os códigos completos referentes às linguagens Fortran 95, Julia e Python se encontram no apêndice. 
+
+O código principal será executado na \textit{main} cujo algoritmo se baseia em passar alguns parâmetros para que a função new\_rap possa executar o algoritmo de Newton--Raphson para a resolução do sistema de equações não-lineares retornando um vetor com as soluções.
+
+Os parâmetros que são passados é um vetor $x0$ contendo os chutes iniciais. Para critério de parada é utilziada uma tolerância que irá indicar a precisão de execução (geralmente um erro na ordem de $10^{-12}$) e o número de iterações.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{Imagens/diag_main.png}
+\caption{Fluxograma da main, função principal para executar o programa. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
+
+O próximo fluxograma indicará a execução da função newton\_raph() para a execução do algoritmo de Newton--Raphson. Ele irá utilizar os chutes iniciais e irá armazenar os valores da função em um vetor através de uma função f() e armazenar os valores do jacobiano pela função jac() para aquele dado chute. Em seguida irá resolver o sistema linear dado pela matriz jacobiana obtida com o vetor de resposta dado pelo oposto dos valores dados pelo vetor de valores da função. Para solução desse sistema será utilizado a fatoração LU por meio de uma função LU().
+
+Após obter a solução do sistema linear, a solução para o sistema de equações não lineares será a soma da solução linear com o chute anterior. Logo após isso, os critérios de parada serão verificados e se caso o valor máximo absoluto dos valores da função para aquele chute forem maior que a tolerância ou o número de iterações ultrapassar a quantidade estipulada, o algoritmo irá parar e retorna a solução para o sistema não-linear. Porém caso esses critérios não forem verdadeiros o algoritmo se repetirá com o vetor de chutes inicias sendo substituído pela atual resposta do sistema não-linear.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/diag_new1.png}
+\caption{Fluxograma da função newton\_raph() que calcula um vetor de soluções para um sistema de equações não-linear. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
+
+Os fluxogramas restantes descrevem, respectivamente o funcionamento da função f() que recebe as coordenadas do ponto e retorna um vetor com os valores da função. A função jac() retorna a matriz jacobiana a partir das coordenadas do ponto por meio de um cálculo numérico de derivadas. Por fim, a função LU() realiza a fatoração LU e resolve o sistema linear a partir de uma dada matriz e um vetor resposta. As figuras referentes a esses três últimos fluoxgramas se encotram no apêndice de fluxogramas.
 
 \newpage
 
 \section{Resultados}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+Para a análise dos resultados fora utilizado o seguinte hardware e software:
 
-Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+\begin{itemize}
+ \item Sistema Operacional Microsoft Windows 10 Home Single Language;
+ 
+ \item Processador Intel® Core(TM) i5-8250U Quadri Core 2.5 GHz com Turbo Max até 3.4 GHz;
+ 
+ \item Placa de vídeo dedicada Geforce MX150 2 GBIntel® HD Graphics 620;
+ 
+ \item Memória RAM 8GB DDR4 2133 MHz;
+ 
+ \item Disco rígido (HD) 1 TB 5400 RPM.
+\end{itemize}
 
+Como IDE para a linguagem Fortran foi utilizado o CodeBlocks com o compilador gcc 5.1.0. Para a linguagem Julia com a versão 1.0.1 foi usada a IDE Juno. Finalmente, para Python foi utilizada a versão 3.7 com a IDE PyCharm.
+  
 \subsection{Raízes}
-Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+O primeiro sistema (sis\_1) possui apenas duas soluções de acordo com a análise do gráfico em três dimensões da intersecção dos planos gerados por cada equação. Porém o segundo sistema (sis\_2) possui infinitas soluções devido a natureza periódica da intereseção entre as duas curvas em duas dimensões. 
+
+A tabela a seguir refere-se às soluções encontradas para cada sistema a partir de um dado chute inicial.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Soluções encontradas para um dado chute inicial (o número após o prefixo sis\_ se refere a qual o sistema a solução se refere e o número após o sufixo \_sol se refere ao número da solução). Fonte: própria.}
+    \begin{tabular}{|c|c|c|}
+\multicolumn{1}{c|}{} & \textbf{Solução} & \textbf{Chute inicial} \\
+
+    sis\_1\_sol1 & [0.35173371, 0.35173371, 0.35173371]  & [0.5, 0.5, 0.5] \\
+
+    sis\_1\_sol2 & [-0.83202504,  1.14898375,  1.14898375]  & [0, 1, 2] \\
+ 
+    sis\_2\_sol1 & [0.11116545 -2.26144905]  & [0.5, -2] \\
+
+    sis\_2\_sol2 & [-0.52596071,  0.78465031] & [0, 0] \\
+
+    sis\_2\_soln & [-4.28925635, 24.05879992]  & [0.25, 0.25] \\
+
+    \end{tabular}%
+  \label{tab:addlabel}%
+\end{table}%
+
+Para o segundo sistema foram analisadas apenas três das infinitas soluções, enquanto que para o primeiro sistema foram encontradas as duas únicas soluções. 
+
+De acordo com cada chute inicial o algoritmo convergia mais facilmente para uma dada solução. No segundo sistema para outros valores de chute inicial podem ser encontradas mais soluções, enquanto que no primeiro o algoritmo só converge para as duas soluções apresentadas.
+
+Em complemento às raízes encontradas, os gráficos das curvas podem ser plotados para uma melhor compreensão da solução encontrada. No primeiro sistema cujo gráfico das curvas é dado em três dimensões (3D) a visualização se torna possível, porém de difícil compreensão. Já o segundo sistema envolve apenas duas variáveis, permitindo a visualização de um gráfico em duas dimensões (2D).
+
+O gráfico do segundo sistema se encontra na figura abaixo obtida pela biblioteca \textit{matplotlib} do Python.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/2d.png}
+\caption{Gráfico das curvas do segundo sistema obtido pela linguagem Python. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
+
+Como ambas as equações do sistema estão igualadas a zero, indica que a solução está em um ponto comum a elas (onde elas se cruzam), como pode ser observado no gráfico da figura acima. 
+
+
 
 \subsection{Eficiência na execução}
-Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+
+Para a comparação do tempo de execução do algoritmo de Newton--Raphson por cada linguagem, foram estabelecidos alguns chutes iniciais em cada linguagem e logo após medidos os tempos.
+
+O gráfico da figura abaixo mostra os valores de tempo absoluto em segundos para cada linguagem, sistema e solução. Lembrando que o rótulo utilizado para se referenciar a cada sistema e solução segue a mesma regra da tabela na subseção anterior ("raízes").
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/graf.jpg}
+\caption{Gráfico com os dados de tempo absoluto de execução. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
+
+Devido a difícil observação e compreensão dos dados no gráfico anterior, fora criada a tabela abaixo para elencar os valores de tempo de execução de cada linguagem normalizada em referência à linguagem Julia. 
+
+\begin{table}[htbp]
+  \centering
+  \caption{Comparação entre o tempo de execução do código fonte de cada linguagem, solução e chute inicial normalizados com o tempo de Julia.}
+    \begin{tabular}{|c|c|c|c|c|}
+   \multicolumn{1}{r|}{} & \textbf{Fortran} & \textbf{Julia } & \textbf{Python} & \textbf{Chute inicial} \\
+    \multicolumn{1}{r|}{} & \textit{gcc 5.1.0} & \textit{1.0.1} & \textit{3.7} &  \\
+    sis\_1\_sol1 & 1.032   & 1       & 1.258   & [0.5, 0.5, 0.5] \\
+
+    sis\_1\_sol2 & 1.002   & 1       & 1.444   & [0, 1, 2] \\
+
+    sis\_2\_sol1 & 1.167   & 1       & 1.060   & [0.5, -2] \\
+
+    sis\_2\_sol2 & 0.948   & 1       & 1.156   & [0, 0] \\
+
+    sis\_2\_soln & 1.169   & 1       & 1.175   & [0.25, 0.25] \\
+
+    \end{tabular}%
+  \label{tab:addlabel}%
+\end{table}%
+
+Assim, com essa tabela a comparação do tempo de execução entre as linguagens fica mais evidente.
 
 \newpage
 
 \section{Conclusões}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et gravida mauris. Phasellus at ipsum in nisl iaculis consequat. Fusce vulputate nisl ipsum, quis egestas justo accumsan et. Morbi consequat tellus a eros eleifend congue. Aenean laoreet mattis nunc, at iaculis orci imperdiet in. Donec a diam in sem auctor fringilla. Aenean euismod odio vel arcu pretium, in vehicula urna ultricies.
+A linguagem de programação JULIA apresentou um desempenho considerável em relação ao tempo de execução do programa apresentado para resolução do sistema não lineares, percebemos que Julia foi de longe, a forma mais rápida de achar as soluções do primeiro sistema, e que no geral, o segundo sistema Julia leva vantagem sobre o Python 3. Na solução dos sistemas não lineares utilizando o método de Newton-Raphson percebemos que as três linguagens analisadas, foram de forma eficientemente aplicadas, retornando assim as soluções esperadas, com várias casas decimais, e com erro na ordem de -12 (menos doze). 
 
-Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium id velit. Donec id tincidunt odio. Fusce vehicula ac est quis convallis. Nullam sollicitudin euismod dolor, eget blandit turpis hendrerit at. In bibendum suscipit odio, at consequat erat laoreet id. Donec in tellus at nulla gravida egestas. Suspendisse non elementum leo. Nam viverra sapien sed velit tempor scelerisque. Nunc accumsan odio eget mi vehicula, vel interdum libero gravida. Pellentesque vitae molestie diam, quis vestibulum libero. Aenean finibus sapien diam, ac sagittis magna placerat nec. Ut maximus eros felis, vel egestas diam convallis sit amet. Integer interdum elementum turpis, sit amet luctus nisi scelerisque at. Donec eleifend arcu dictum metus ullamcorper tempor. Aenean placerat, arcu id suscipit vehicula, velit ipsum viverra lorem, et pretium velit tellus quis libero.
+De acordo com o trabalho apresentado, a linguagem de programação Julia, devido sua simplicidade de sintaxe e resultados nos testes, apresenta potencial significativo como alternativa as outras linguagens como: Python, Fortran, MATLAB etc. Percebemos também que por se tratar de uma linguagem nova, é uma alternativa de altíssimo peso na computação numérica, destacando por ter um código-fonte livre e por ser uma linguagem Open Source. 
+
+Por fim, analisando como um todo a linguagem notamos que Julia é uma grande linguagem para o futuro, tendo em vista que Softwares como MATLAB se tornam uma maneira inviável para estudantes e pesquisadores, pois o preço é proibitivo para esse público, com isso, estudo que como esses contribuem ainda mais a crescer a comunidade da Julia, para que todos possam conhecer e usufruir dela.
+
 
 \newpage
 
@@ -271,51 +404,73 @@ Vivamus ut pharetra diam. Aliquam metus sem, tristique ac dignissim eu, pretium 
 
 \newpage
 
+
+
 \section{Apêndice}
+\subsection{Fluxogramas restantes}
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/diag_func.png}
+\caption{Fluxograma da função f() que calcula um vetor de valores do sistema de equação para um dado ponto. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/diag_jac1.png}
+\caption{Fluxograma da função jac() que calcula a matriz jacobiana para um dado ponto. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{Imagens/diag_LU1.png}
+\caption{Fluxograma da função LU() que soluciona um sistema linear por fatoração LU. Fonte: própria.}
+\label{galvanometro}
+\end{figure}
+
+\newpage
 
 \subsection{Fortran}
 \begin{lstlisting}
 program main
     implicit none
-    double precision :: x0(3), x(size(x0)), tol, iter
+    double precision :: x0(2), x(size(x0)), tol
+    integer :: iter
     !Chute inicial
-    x0(1) = 0.5
-    x0(2) = 0.5
-    x0(3) = 0.5
+    x0(1) = 0
+    x0(2) = 0
     iter = 100 !Numero de iteracoes
     tol = 1e-12 !Tolerancia
 
     x = newton_raph(x0, tol, .true., iter)
-    write(*,*) x(1), x(2), x(3) !Solucao
+    write(*,*) x(1), x(2) !Solucao
 
 
 
 contains
-    
+
     !DECLARACAO DAS FUNCOES
     function f(p) result(res)
         IMPLICIT NONE
-        double precision :: p(:), res(size(p))
-        
+        double precision :: p(:), res(size(p)), PI=4.D0*DATAN(1.D0)
+
         !Sistema de equacoes
 
         !eq1: 1/2*sin(x1*x2)-(x2/(4*pi))-(x1/2),
         !eq2: (1-1/(4*pi))*((exp(2*x1))-exp(1))-((exp(1)*x2)/pi)-2*exp(1)*x1)
-
+        !PI=4.D0*DATAN(1.D0)
         !eq3: x2+x3-exp(-x1)
         !eq4: x1+x3-exp(-x3)
         !eq5: x1+x2-exp(-x3)
 
-        res(1) = p(2) + p(3) - exp(-p(1))
-        res(2) = p(1) + p(3) - exp(-p(3))
-        res(3) = p(1) + p(2) - exp(-p(3))
+        res(1) = 0.5*sin(p(1)*p(2)) - (p(2)/(4*PI)) - 0.5*p(1)
+        res(2) = (1-1/(4*PI))*(exp(2*p(1))-exp(1.0)) - (exp(1.0)*p(2)/PI) - 2*exp(1.0)*p(1)
     end function f
     !MATRIZ JACOBIANA
     function jac(x) result(jc)
         IMPLICIT NONE
-        double precision :: dx=1e-12, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
+        double precision :: dx=1e-10, x(:), jc(size(x), size(x)), xn(size(x)), dy(size(x)), dif(size(x))
         integer :: n, i, k
 
         n = size(x)
@@ -357,14 +512,13 @@ contains
                 L(k, i) = c !Armazena o multiplicador
                 do j = 1,n
                     U(k, j) = U(k, j) - c*U(i, j) !Multiplica com o pivo da linha e subtrai
-end
                 end do
             end do
             do k = (i+1),n
                 U(k, i) = 0
             end do
         end do
-        
+
         !Resolve o Sistema Ly=b
         do i = 1,n
             y(i) = b(i) / L(i, i)
@@ -419,6 +573,7 @@ end
     end function newton_raph
 
 end program main
+
 \end{lstlisting}
 \newpage
 

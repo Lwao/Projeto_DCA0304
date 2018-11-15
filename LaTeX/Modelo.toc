@@ -2,13 +2,14 @@
 \contentsline {section}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
 \contentsline {section}{\numberline {2}Desenvolvimento}{3}
 \contentsline {subsection}{\numberline {2.1}Newton-Raphson para sistema de equa\IeC {\c c}\IeC {\~o}es n\IeC {\~a}o-lineares}{3}
-\contentsline {subsection}{\numberline {2.2}SENL propostos}{3}
-\contentsline {subsection}{\numberline {2.3}Fluxograma do pseudoc\IeC {\'o}digo}{4}
-\contentsline {section}{\numberline {3}Resultados}{5}
-\contentsline {subsection}{\numberline {3.1}Ra\IeC {\'\i }zes}{5}
-\contentsline {subsection}{\numberline {3.2}Efici\IeC {\^e}ncia na execu\IeC {\c c}\IeC {\~a}o}{5}
-\contentsline {section}{\numberline {4}Conclus\IeC {\~o}es}{6}
-\contentsline {section}{\numberline {5}Ap\IeC {\^e}ndice}{8}
-\contentsline {subsection}{\numberline {5.1}Fortran}{8}
-\contentsline {subsection}{\numberline {5.2}Julia}{12}
-\contentsline {subsection}{\numberline {5.3}Python}{15}
+\contentsline {subsection}{\numberline {2.2}Sistema de equa\IeC {\c c}\IeC {\~o}es propostos}{3}
+\contentsline {subsection}{\numberline {2.3}Fluxograma do algoritmo}{4}
+\contentsline {section}{\numberline {3}Resultados}{7}
+\contentsline {subsection}{\numberline {3.1}Ra\IeC {\'\i }zes}{7}
+\contentsline {subsection}{\numberline {3.2}Efici\IeC {\^e}ncia na execu\IeC {\c c}\IeC {\~a}o}{8}
+\contentsline {section}{\numberline {4}Conclus\IeC {\~o}es}{10}
+\contentsline {section}{\numberline {5}Ap\IeC {\^e}ndice}{12}
+\contentsline {subsection}{\numberline {5.1}Fluxogramas restantes}{12}
+\contentsline {subsection}{\numberline {5.2}Fortran}{13}
+\contentsline {subsection}{\numberline {5.3}Julia}{18}
+\contentsline {subsection}{\numberline {5.4}Python}{21}
